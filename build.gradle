@@ -33,4 +33,4 @@ task gitSubmodulesUpdate {
         commandLine 'git', 'submodule', 'update', '--init', '--recursive'
     }
 }
-clean.dependsOn gitSubmodulesUpdate
+clean.dependsOn 'gitSubmodulesUpdate'
