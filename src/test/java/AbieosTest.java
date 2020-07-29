@@ -10,12 +10,6 @@ import static org.junit.Assert.fail;
 
 public class AbieosTest {
 
-    @Test
-    public void testHello() throws SerializationProviderError {
-        String text = new AbiEosSerializationProviderImpl().stringFromAbiEos();
-        System.out.println(text);
-    }
-
     private static AbiEosSerializationProviderImpl abieos;
     private static final String RETURN_VALUE_ABI = "{\"version\":\"eosio::abi/1.2\",\"types\":[],\"structs\":[{\"name\":\"retval.complex\",\"base\":\"\",\"fields\":[{\"name\":\"user\",\"type\":\"name\"}]},{\"name\":\"retval.simple\",\"base\":\"\",\"fields\":[{\"name\":\"user\",\"type\":\"name\"}]},{\"name\":\"retval.null\",\"base\":\"\",\"fields\":[{\"name\":\"user\",\"type\":\"name\"}]},{\"name\":\"returnValue\",\"base\":\"\",\"fields\":[{\"name\":\"id\",\"type\":\"uint32\"},{\"name\":\"name\",\"type\":\"name\"}]}],\"actions\":[{\"name\":\"retval.complex\",\"type\":\"retval.complex\",\"ricardian_contract\":\"\"},{\"name\":\"retval.simple\",\"type\":\"retval.simple\",\"ricardian_contract\":\"\"},{\"name\":\"retval.null\",\"type\":\"retval.null\",\"ricardian_contract\":\"\"}],\"tables\":[],\"ricardian_clauses\":[],\"error_messages\":[],\"abi_extensions\":[],\"variants\":[]}";
     private static final String QUERY_IT_ABI = "{\"version\":\"eosio::abi/1.1\",\"types\":[{\"new_type_name\":\"any_array\",\"type\":\"anyvar[]\"},{\"new_type_name\":\"any_object\",\"type\":\"field[]\"}],\"structs\":[{\"name\":\"null_t\",\"base\":\"\",\"fields\":[]},{\"name\":\"field\",\"base\":\"\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"anyvar\"}]},{\"name\":\"query\",\"base\":\"\",\"fields\":[{\"name\":\"method\",\"type\":\"string\"},{\"name\":\"arg\",\"type\":\"anyvar?\"},{\"name\":\"filter\",\"type\":\"query[]\"}]}],\"variants\":[{\"name\":\"anyvar\",\"types\":[\"null_t\",\"int64\",\"uint64\",\"int32\",\"uint32\",\"int16\",\"uint16\",\"int8\",\"uint8\",\"time_point\",\"checksum256\",\"float64\",\"string\",\"any_object\",\"any_array\",\"bytes\",\"symbol\",\"symbol_code\",\"asset\"]}]}";
@@ -34,6 +28,12 @@ public class AbieosTest {
     public static void endTearDown() {
         abieos.destroyContext();
         abieos = null;
+    }
+
+    @Test
+    public void testHello() throws SerializationProviderError {
+        String text = new AbiEosSerializationProviderImpl().stringFromAbiEos();
+        System.out.println(text);
     }
 
     /**
