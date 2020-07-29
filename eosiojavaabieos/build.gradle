@@ -21,8 +21,12 @@ library {
             compileTask.includes.from("${Jvm.current().javaHome}/include/win32")
         }
 
-        compileTask.source.from fileTree(dir: "include/eosio", include: "fpconv.c")
         compileTask.source.from fileTree(dir: "src/main/cpp", include: "abieos-lib.cpp")
+        compileTask.source.from fileTree(dir: "../abieos", includes:
+                ["src/abieos.cpp", "src/abi.cpp", "src/crypto.cpp", "src/fuzzer.cpp", "include/eosio/fpconv.c"])
+
+        compileTask.includes.from("../abieos/include")
+        compileTask.includes.from("../abieos/external/rapidjson/include")
 
         def toolChain = binary.toolChain
         if (toolChain instanceof VisualCpp) {

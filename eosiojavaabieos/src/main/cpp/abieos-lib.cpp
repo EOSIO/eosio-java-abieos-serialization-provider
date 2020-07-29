@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 
-#include "abieos/abieos.h"
+#include "../../../../abieos/src/abieos.h"
 
 extern "C"
 {
