@@ -27,3 +27,10 @@ test {
 }
 
 test.dependsOn ':eosiojavaabieos:linkDebug'
+
+task gitSubmodulesUpdate {
+    exec {
+        commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+    }
+}
+clean.dependsOn gitSubmodulesUpdate
