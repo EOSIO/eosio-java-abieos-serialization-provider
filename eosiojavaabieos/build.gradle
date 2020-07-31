@@ -29,10 +29,13 @@ library {
         if (toolChain instanceof VisualCpp) {
             compileTask.compilerArgs.addAll(["/TC"])
         } else if (toolChain instanceof GccCompatibleToolChain) {
-            compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+            def architectureName = binary.targetPlatform.targetMachine.architecture.name;
+            if (architectureName == "x86-64") {
+                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+            } else {
+                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+            }
         }
-
-        //if (binary.targetPlatform.targetMachine.architecture)
     }
 }
 
