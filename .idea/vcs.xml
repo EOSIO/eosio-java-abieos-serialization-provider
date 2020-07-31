@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/abieos" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/abieos/external/eosjs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/abieos/external/rapidjson" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/abieos/external/rapidjson/thirdparty/gtest" vcs="Git" />
   </component>
 </project>

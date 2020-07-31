@@ -1,14 +1,29 @@
-plugins {
-    id 'java-library'
-    id 'cpp'
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
 }
 
-group 'one.block.eosiojavaabieosserializationprovider'
-version '1.0-SNAPSHOT'
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'com.jfrog.artifactory' version '4.10.0'
+}
 
-repositories {
-    jcenter()
-    mavenCentral()
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        //Remove maven{} block if you are not using Artifactory, otherwise define your own values in the gradle.properties file
+        maven {
+            credentials{
+                username artifactory_username
+                password artifactory_password
+            }
+            url artifactory_path_android_libraries
+        }
+    }
 }
 
 sourceCompatibility = 1.8
@@ -34,3 +49,64 @@ task gitSubmodulesUpdate {
     }
 }
 clean.dependsOn 'gitSubmodulesUpdate'
+
+def libraryGroupId = 'one.block'
+def libraryArtifactId = 'eosiojavaabieosserializationprovider'
+def libraryVersion = '0.1.0-test1'
+
+task sourcesJar(type: Jar, dependsOn: classes){
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc){
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        jar(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+
+            groupId libraryGroupId
+            version libraryVersion
+            artifactId libraryArtifactId
+
+            artifact("$buildDir/libs/${artifactId}.jar")
+        }
+    }
+}
+
+artifactory {
+    contextUrl = artifactory_contextURL
+    publish {
+        repository {
+            repoKey = artifactory_repo
+
+            username = artifactory_username
+            password = artifactory_password
+        }
+        defaults {
+            publications('maven')
+            publishArtifacts = true
+
+            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+            publishPom = true
+        }
+    }
+}

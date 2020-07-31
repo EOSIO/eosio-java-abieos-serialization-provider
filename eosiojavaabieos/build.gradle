@@ -4,9 +4,6 @@ plugins {
     id 'cpp-library'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
-
 library {
     binaries.configureEach { CppBinary binary ->
         def compileTask = binary.compileTask.get()
