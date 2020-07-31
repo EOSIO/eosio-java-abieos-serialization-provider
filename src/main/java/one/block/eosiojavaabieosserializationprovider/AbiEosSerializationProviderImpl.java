@@ -6,12 +6,14 @@ import one.block.eosiojava.models.AbiEosSerializationObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
 public class AbiEosSerializationProviderImpl implements ISerializationProvider {
 
     static {
+        NativeLibsLoaderUtil.addLibsToJavaLibraryPath("/eosiojavaabieos/build/lib/main/debug", true);
         System.loadLibrary("eosiojavaabieos");
     }
 
