@@ -37,7 +37,13 @@ dependencies {
     implementation 'org.jetbrains:annotations:17.0.0'
 }
 
-test.dependsOn ':eosiojavaabieos:linkDebug'
+task copyNativeLibrary(type: Copy) {
+    from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.dylib'
+    into 'src/main/resources/eosiojavaabieos/build/lib/main/debug'
+}
+copyNativeLibrary.mustRunAfter ':eosiojavaabieos:linkDebug'
+
+test.dependsOn ':eosiojavaabieos:linkDebug', 'copyNativeLibrary'
 
 task gitSubmodulesUpdate {
     exec {
