@@ -117,7 +117,7 @@ artifactory {
             password = artifactory_password
         }
         defaults {
-            publications('maven')
+            publications('jar')
             publishArtifacts = true
 
             properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
