@@ -37,15 +37,25 @@ dependencies {
     implementation 'org.jetbrains:annotations:17.0.0'
 }
 
+jar {
+    dependsOn 'copyNativeLibrary'
+    // Copy lib file before jar is created
+    from('eosiojavaabieos/build/lib/main/debug'){
+        include('libeosiojavaabieos.dylib')
+        into('eosiojavaabieos/build/lib/main/debug')
+    }
+}
+
 task copyNativeLibrary(type: Copy) {
+    dependsOn ':eosiojavaabieos:linkDebug'
+    // Copy lib to /resources so tests can run within project (outside of gradle task)
     from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.dylib'
     into 'src/main/resources/eosiojavaabieos/build/lib/main/debug'
 }
-copyNativeLibrary.dependsOn ':eosiojavaabieos:linkDebug'
 
 test {
     dependsOn 'copyNativeLibrary'
-    ignoreFailures(true)
+    systemProperty "java.library.path", file("${project(":eosiojavaabieos").buildDir}/lib/main/debug").absolutePath
 }
 
 task gitSubmodulesUpdate {

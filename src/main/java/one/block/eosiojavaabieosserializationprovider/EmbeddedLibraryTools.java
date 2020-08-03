@@ -109,12 +109,10 @@ public class EmbeddedLibraryTools {
         boolean usingEmbedded = false;
 
         // attempt to locate embedded native library within JAR at following location:
-        // /NATIVE/${os.arch}/${os.name}/libjzmq.[so|dylib|dll]
-        String[] allowedExtensions = new String[]{"so", "dylib", "dll"};
+        String[] allowedExtensions = new String[]{"dylib", "so", "dll"};
         String[] libs = new String[]{"libeosiojavaabieos"};
         StringBuilder url = new StringBuilder();
         url.append("/eosiojavaabieos/build/lib/main/debug/");
-        //url.append(getCurrentPlatformIdentifier()).append("/");
         for (String lib : libs) {
             URL nativeLibraryUrl = null;
             // loop through extensions, stopping after finding first one
