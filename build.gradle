@@ -66,7 +66,7 @@ task gitSubmodulesUpdate {
 clean.dependsOn 'gitSubmodulesUpdate'
 
 def libraryGroupId = 'one.block'
-def libraryArtifactId = 'eosiojavaabieosserializationprovider'
+def libraryArtifactId = 'eosio-java-abieos-serialization-provider'
 def libraryVersion = '0.1.0'
 
 task sourcesJar(type: Jar, dependsOn: classes){
