@@ -222,7 +222,7 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
      *
      * @param json - JSON string representing the serialized transaction (v0) to serialize.
      * @return - Serialized hex string representing the transaction JSON.
-     * @throws SerializePackedTransactionError - A serialization error is thrown if there are any exceptions during the
+     * @throws SerializeTransactionError - A serialization error is thrown if there are any exceptions during the
      *      * conversion process.
      */
     @NotNull
@@ -328,7 +328,7 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
      *
      * @param hex - Hex string representing the packed transaction (v0) to deserialize.
      * @return - Deserialized JSON string representing the transaction hex.
-     * @throws DeserializePackedTransactionError - A deserialization error is thrown if there are any exceptions during the
+     * @throws DeserializeTransactionError - A deserialization error is thrown if there are any exceptions during the
      *      * conversion process.
      */
     @NotNull
