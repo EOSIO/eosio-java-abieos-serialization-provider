@@ -8,7 +8,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.jfrog.artifactory' version '4.10.0'
+    id 'com.jfrog.artifactory' version '4.17.2'
 }
 
 allprojects {
@@ -175,7 +175,7 @@ artifactory {
             publications('jar')
             publishArtifacts = true
 
-            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+            properties = ['qa.level': 'basic', 'dev.team': 'core']
             publishPom = true
         }
     }
