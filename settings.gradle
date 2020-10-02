@@ -1,0 +1,3 @@
+rootProject.name = 'eosio-java-abieos-serialization-provider'
+include 'eosiojavaabieos'
+
