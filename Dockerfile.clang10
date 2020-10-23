@@ -1,0 +1,8 @@
+FROM gradle@sha256:e006904a980138bf492cd242cbfe564affcc53865953898f20d861a4c9a33ea1
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+	add-apt-repository ppa:ubuntu-toolchain-r/test && \
+	apt update && \
+    apt-get install -y libstdc++-10-dev clang-10 cmake && \
+	update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 1100 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-10 && \
+    apt-get clean
