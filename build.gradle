@@ -41,8 +41,9 @@ dependencies {
 jar {
     dependsOn 'copyNativeLibrary'
     // Copy lib file before jar is created
-    from('eosiojavaabieos/build/lib/main/debug'){
-        include('libeosiojavaabieos.so')
+    from('eosiojavaabieos/build/lib/main/debug') {
+        include '**/*.so'
+        include '**/*.dylib'
         into('eosiojavaabieos/build/lib/main/debug')
     }
 }
@@ -50,7 +51,10 @@ jar {
 task copyNativeLibrary(type: Copy) {
     dependsOn ':eosiojavaabieos:linkDebug'
     // Copy lib to /resources so tests can run within project (outside of gradle task)
-    from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.so'
+    from ('eosiojavaabieos/build/lib/main/debug') {
+        include '**/*.so'
+        include '**/*.dylib'
+    }
     into 'src/main/resources/eosiojavaabieos/build/lib/main/debug'
 }
 
@@ -67,7 +71,13 @@ task gitSubmodulesUpdate {
         commandLine 'git', 'submodule', 'update', '--init', '--recursive'
     }
 }
-clean.dependsOn 'gitSubmodulesUpdate'
+
+task deleteCopiedNativeLibrary(type: Delete) {
+    dependsOn('gitSubmodulesUpdate')
+    delete fileTree(include: ["*.dylib", "*.so"], dir: 'src/main/resources/eosiojavaabieos/build/lib/main/debug')
+}
+
+clean.dependsOn 'deleteCopiedNativeLibrary'
 
 def libraryGroupId = 'one.block'
 def libraryArtifactId = 'eosio-java-abieos-serialization-provider'
