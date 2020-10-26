@@ -31,9 +31,17 @@ library {
         } else if (toolChain instanceof GccCompatibleToolChain) {
             def architectureName = binary.targetPlatform.targetMachine.architecture.name;
             if (architectureName == "x86-64") {
-                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+                }
             } else {
-                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z", "-DABIEOS_NO_INT128"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+                }
             }
         }
     }
