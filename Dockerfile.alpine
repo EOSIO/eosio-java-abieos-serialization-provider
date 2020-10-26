@@ -1,0 +1,20 @@
+#FROM alpine:3.6
+FROM gradle:alpine
+
+VOLUME ["/project"]
+WORKDIR ["/project"]
+
+RUN apk update && \
+    apk upgrade && \
+    apk --update add \
+        gcc \
+        g++ \
+        #alpine-sdk boost-dev boost-static cmake libusb-dev llvm-dev llvm-static curl-dev gmp-dev gettext-dev \
+        build-base \
+        bash \
+        libstdc++ && \
+    rm -rf /var/cache/apk/*
+
+ADD ./scripts/cmake-build.sh /build.sh
+
+RUN chmod +x /build.sh && g++ -v
