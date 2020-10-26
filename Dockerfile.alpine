@@ -21,6 +21,6 @@ RUN apk update && \
 #ADD ./scripts/cmake-build.sh /build.sh
 #RUN chmod +x /build.sh
 
-USER nobody
+USER gradle
 
 RUN g++ -v
