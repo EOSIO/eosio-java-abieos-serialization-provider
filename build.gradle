@@ -42,7 +42,7 @@ jar {
     dependsOn 'copyNativeLibrary'
     // Copy lib file before jar is created
     from('eosiojavaabieos/build/lib/main/debug'){
-        include('libeosiojavaabieos.dylib')
+        include('libeosiojavaabieos.so')
         into('eosiojavaabieos/build/lib/main/debug')
     }
 }
@@ -50,7 +50,7 @@ jar {
 task copyNativeLibrary(type: Copy) {
     dependsOn ':eosiojavaabieos:linkDebug'
     // Copy lib to /resources so tests can run within project (outside of gradle task)
-    from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.dylib'
+    from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.so'
     into 'src/main/resources/eosiojavaabieos/build/lib/main/debug'
 }
 
