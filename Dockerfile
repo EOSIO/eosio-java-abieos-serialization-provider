@@ -1,7 +1,26 @@
-FROM gradle@sha256:e006904a980138bf492cd242cbfe564affcc53865953898f20d861a4c9a33ea1
-RUN apt-get update && \
-    apt-get install -y g++-8 gcc-8 cmake && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 && \
-    apt-get clean && \
-    g++ -v
+#FROM alpine:3.6
+FROM gradle:alpine
+
+VOLUME ["/project"]
+WORKDIR ["/project"]
+
+USER root
+
+RUN apk update && \
+    apk upgrade && \
+    apk --update add \
+        #gcc \
+        #g++ \
+        cmake \
+        alpine-sdk boost-dev boost-static libusb-dev llvm-dev llvm-static curl-dev gmp-dev gettext-dev \
+        #build-base \
+        #bash \
+        #libstdc++ && \
+    rm -rf /var/cache/apk/*
+
+#ADD ./scripts/cmake-build.sh /build.sh
+#RUN chmod +x /build.sh
+
+USER gradle
+
+RUN g++ -v
