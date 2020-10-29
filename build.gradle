@@ -22,7 +22,7 @@ allprojects {
                 username artifactory_username
                 password artifactory_password
             }
-            url artifactory_path_android_libraries
+            url artifactory_contextURL
         }
     }
 }
@@ -71,7 +71,7 @@ clean.dependsOn 'gitSubmodulesUpdate'
 
 def libraryGroupId = 'one.block'
 def libraryArtifactId = 'eosio-java-abieos-serialization-provider'
-def libraryVersion = '0.1.2'
+def libraryVersion = '0.1.2-thursdayVI'
 
 task sourcesJar(type: Jar, dependsOn: classes){
     classifier = 'sources'
@@ -150,9 +150,3 @@ artifactory {
     }
 }
 
-//Remove deleteOldVersion{} block if you are not using Artifactory
-task deleteOldVersion(){
-    def auth = artifactory_username + ':' + artifactory_password
-    def repo = artifactory_contextURL + '/android-libs-scratch-local' + '/one/block/eosio-java-abieos-serialization-provider'
-    ['curl', '-XDELETE', 'POST', '-u', auth, repo].execute()
-}
