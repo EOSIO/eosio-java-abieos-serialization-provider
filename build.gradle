@@ -22,7 +22,7 @@ allprojects {
                 username artifactory_username
                 password artifactory_password
             }
-            url artifactory_contextURL
+            url artifactory_path_android_libraries
         }
     }
 }
@@ -34,7 +34,7 @@ dependencies {
     implementation fileTree(include: ['*.jar', "*.dylib", "*.so"], dir: 'libs')
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation group: 'org.json', name: 'json', version: '20200518'
-    implementation 'one.block:eosiojava:0.1.2'
+    implementation 'one.block:eosiojava:0.1.6-eosio2.1'
     implementation 'org.jetbrains:annotations:17.0.0'
 }
 
@@ -71,7 +71,7 @@ clean.dependsOn 'gitSubmodulesUpdate'
 
 def libraryGroupId = 'one.block'
 def libraryArtifactId = 'eosio-java-abieos-serialization-provider'
-def libraryVersion = '0.1.2-thursdayVI'
+def libraryVersion = '0.1.2-newdependencyI'
 
 task sourcesJar(type: Jar, dependsOn: classes){
     classifier = 'sources'
