@@ -5,8 +5,10 @@ plugins {
 }
 
 library {
-    binaries.configureEach { CppBinary binary ->
+    binaries.configureEach { CppSharedLibrary binary ->
         def compileTask = binary.compileTask.get()
+        def linkTask = binary.linkTask.get()
+
         compileTask.includes.from("${Jvm.current().javaHome}/include")
 
         def osFamily = binary.targetPlatform.targetMachine.operatingSystemFamily
@@ -31,9 +33,19 @@ library {
         } else if (toolChain instanceof GccCompatibleToolChain) {
             def architectureName = binary.targetPlatform.targetMachine.architecture.name;
             if (architectureName == "x86-64") {
-                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z"])
+                    linkTask.linkerArgs.addAll(["-fPIC", "-z noexecstack"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+                }
             } else {
-                compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z", "-DABIEOS_NO_INT128"])
+                    linkTask.linkerArgs.addAll(["-fPIC", "-z noexecstack"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+                }
             }
         }
     }
