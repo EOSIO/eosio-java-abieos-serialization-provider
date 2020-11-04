@@ -78,7 +78,7 @@ try {
 You should explicitly destroy the provider's context, or you could run into a crash when multithreading, per this call:
 
 ```
-abieos.deserializeTransaction(hex).destroyContext();
+abieos.destroyContext();
 ```
 
 ## Releases
