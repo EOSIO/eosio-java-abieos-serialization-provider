@@ -75,7 +75,7 @@ try {
 }
 ```
 
-You should explicitly destroy the provider's context, or you could run into a crash when multithreading, per this call:
+You should explicitly destroy the provider's context (i.e. in a `finally` block), or you could run into a crash when multithreading, per this call:
 
 ```
 abieos.destroyContext();
