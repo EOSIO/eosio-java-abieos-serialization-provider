@@ -38,8 +38,8 @@ ABIEOS Serialization Provider is intended to be used in conjunction with [EOSIO 
 To use ABIEOS Serialization Provider with EOSIO SDK for Java in your app, add the following modules to your `build.gradle`:
 
 ```groovy
-implementation 'one.block:eosiojava:0.1.5'
-implementation 'one.block:eosio-java-abieos-serialization-provider:0.1.3'
+implementation 'one.block:eosiojava:1.0.0'
+implementation 'one.block:eosio-java-abieos-serialization-provider:1.0.0'
 ```
 
 The `build.gradle` files for the project currently include configurations for publishing the project to Artifactory.  These should be removed if you are not planning to use Artifactory or you will encounter build errors.  To do so, make the changes marked by comments throughout the files.
@@ -82,6 +82,10 @@ abieos.destroyContext();
 ```
 
 ## Releases
+
+11/05/20
+
+Version 1.0.0 Release with EOSIO 3.0 functionality.  Docker builds for Alpline and Ubuntu Linux.
 
 10/15/20
 
