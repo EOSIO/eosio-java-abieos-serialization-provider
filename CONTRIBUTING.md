@@ -98,10 +98,37 @@ docker build --tag eosio-java-abieos:build .
 If the docker image builds succesfully, then you should be able to build and jar [ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-abieos-serialization-provider) by running the command:
 
 ```
-docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project eosio-java-abieos:build ./gradlew --console=rich jar
+docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project eosio-java-abieos:build ./gradlew --console=rich clean build
 ```
 
 Any other valid gradle task can be substituted for `jar` in the command above.  The docker images attach the project directory on the host machine, so changes made by the image will be visible to the host machine, and the reverse is also true.
+
+Validate the jar has the correct contents by running the following command, and making sure the output matches what's below. If there is a '.dylib' file(s) or anything else, it might a crash:
+
+```
+jar tf build/libs/eosio-java-abieos-serialization-provider.jar
+```
+
+Should match:
+
+```
+META-INF/
+META-INF/MANIFEST.MF
+one/
+one/block/
+one/block/eosiojavaabieosserializationprovider/
+one/block/eosiojavaabieosserializationprovider/JsonUtils.class
+one/block/eosiojavaabieosserializationprovider/EmbeddedLibraryTools.class
+one/block/eosiojavaabieosserializationprovider/AbiEosSerializationProviderImpl.class
+one/block/eosiojavaabieosserializationprovider/AbieosContextNullError.class
+one/block/eosiojavaabieosserializationprovider/AbiEosJson.class
+eosiojavaabieos/
+eosiojavaabieos/build/
+eosiojavaabieos/build/lib/
+eosiojavaabieos/build/lib/main/
+eosiojavaabieos/build/lib/main/debug/
+eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.so
+```
 
 ### Submitting Pull Requests
 

@@ -160,4 +160,8 @@ artifactory {
     }
 }
 
-
+//task deleteOldVersion(){
+//    def auth = artifactory_username + ':' + artifactory_password
+//    def repo = artifactory_contextURL + '/android-libs-scratch-local' + '/one/block/eosio-java-abieos-serialization-provider'
+//    ['curl', '-XDELETE', 'POST', '-u', auth, repo].execute()
+//}
