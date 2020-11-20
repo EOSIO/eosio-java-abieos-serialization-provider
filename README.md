@@ -27,7 +27,7 @@ Serialization providers are responsible for ABI-driven transaction and action se
 * Gradle 4.10.1+
 * Gradle Plugin 3.3.0+
 * Java SE 8+
-* Docker (if you wish to leverage one of the docker based build container to cross compile for a server environment.) Docker Desktop 2.4.0+ is a good way to install this on a developer machine. Full instructions for building with Docker can be found in the [CONTRIBUTING](CONTRIBUTING.md) file.
+* Docker (if you wish to leverage one of the Docker-based build containers to cross compile for a server environment.) Docker Desktop 2.4.0+ is a good way to install this on a developer machine. Full instructions for building with Docker can be found in the [CONTRIBUTING](CONTRIBUTING.md) file.
 
 This project is compatible with server-side Java but requires native libraries built on the target machine. Therefore, any project depending on Java Serialization Provider with [EOSIO SDK for Java](https://github.com/EOSIO/eosio-java) **must use a version built for the target server host and be a server-side Java project**.
 
