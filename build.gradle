@@ -34,15 +34,16 @@ dependencies {
     implementation fileTree(include: ['*.jar', "*.dylib", "*.so"], dir: 'libs')
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation group: 'org.json', name: 'json', version: '20200518'
-    implementation 'one.block:eosiojava:0.1.2'
+    implementation 'one.block:eosiojava:1.0.0'
     implementation 'org.jetbrains:annotations:17.0.0'
 }
 
 jar {
     dependsOn 'copyNativeLibrary'
     // Copy lib file before jar is created
-    from('eosiojavaabieos/build/lib/main/debug'){
-        include('libeosiojavaabieos.dylib')
+    from('eosiojavaabieos/build/lib/main/debug') {
+        include '**/*.so'
+        include '**/*.dylib'
         into('eosiojavaabieos/build/lib/main/debug')
     }
 }
@@ -50,13 +51,19 @@ jar {
 task copyNativeLibrary(type: Copy) {
     dependsOn ':eosiojavaabieos:linkDebug'
     // Copy lib to /resources so tests can run within project (outside of gradle task)
-    from 'eosiojavaabieos/build/lib/main/debug/libeosiojavaabieos.dylib'
+    from ('eosiojavaabieos/build/lib/main/debug') {
+        include '**/*.so'
+        include '**/*.dylib'
+    }
     into 'src/main/resources/eosiojavaabieos/build/lib/main/debug'
 }
 
 test {
     dependsOn 'copyNativeLibrary'
     systemProperty "java.library.path", file("${project(":eosiojavaabieos").buildDir}/lib/main/debug").absolutePath
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 task gitSubmodulesUpdate {
@@ -64,11 +71,17 @@ task gitSubmodulesUpdate {
         commandLine 'git', 'submodule', 'update', '--init', '--recursive'
     }
 }
-clean.dependsOn 'gitSubmodulesUpdate'
+
+task deleteCopiedNativeLibrary(type: Delete) {
+    dependsOn('gitSubmodulesUpdate')
+    delete fileTree(include: ["*.dylib", "*.so"], dir: 'src/main/resources/eosiojavaabieos/build/lib/main/debug')
+}
+
+clean.dependsOn 'deleteCopiedNativeLibrary'
 
 def libraryGroupId = 'one.block'
 def libraryArtifactId = 'eosio-java-abieos-serialization-provider'
-def libraryVersion = '0.1.2'
+def libraryVersion = '1.0.0'
 
 task sourcesJar(type: Jar, dependsOn: classes){
     classifier = 'sources'
@@ -145,11 +158,4 @@ artifactory {
             publishPom = true
         }
     }
-}
-
-//Remove deleteOldVersion{} block if you are not using Artifactory
-task deleteOldVersion(){
-    def auth = artifactory_username + ':' + artifactory_password
-    def repo = artifactory_contextURL + '/android-libs-scratch-local' + '/one/block/eosio-java-abieos-serialization-provider'
-    ['curl', '-XDELETE', 'POST', '-u', auth, repo].execute()
 }
