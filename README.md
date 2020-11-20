@@ -1,9 +1,9 @@
 ![Java Logo](img/java-logo.png)
-# EOSIO SDK for Java: ABIEOS Serialization Provider ![EOSIO Alpha](https://img.shields.io/badge/EOSIO-Alpha-blue.svg)
+# EOSIO SDK for Java: ABIEOS Serialization Provider
 
 [![Software License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](./LICENSE)
 ![Language Java](https://img.shields.io/badge/Language-C%2B%2B%2FJava-yellow.svg)
-![](https://img.shields.io/badge/Deployment%20Target-Android%206%2B-blue.svg)
+![](https://img.shields.io/badge/Deployment%20Target-JVM-blue.svg)
 
 ABIEOS Serialization Provider is a pluggable serialization provider for EOSIO SDK for Java.
 
@@ -23,13 +23,17 @@ Serialization providers are responsible for ABI-driven transaction and action se
 ## Prerequisites
 
 * Eclipse 4.5+, Intellij 2019+, or other Java IDE
-* Host C++ compiler that is supported by the Gradle cpp-library plugin (GCC, Clang, LLVM, Visual Studio C++) that conforms to C++ standard 17.
+* Host C++ compiler that is supported by the Gradle cpp-library plugin (GCC, Clang, LLVM, Visual Studio C++) that conforms to C++ standard 17
 * Gradle 4.10.1+
 * Gradle Plugin 3.3.0+
 * Java SE 8+
-* Docker If you wish to leverage one of the docker based build container to cross compile for a server environment.  Docker Desktop 2.4.0+ is a good way to install this on a developer machine.  Full instructions for building with docker can be found in the [CONTRIBUTING](CONTRIBUTING.md) file.
+* Docker (if you wish to leverage one of the docker based build container to cross compile for a server environment.) Docker Desktop 2.4.0+ is a good way to install this on a developer machine. Full instructions for building with Docker can be found in the [CONTRIBUTING](CONTRIBUTING.md) file.
 
-This project is compatible with server-side Java but requires native libraries built on the target machine. Therefore, any project depending on Java Serialization Provider with [EOSIO SDK for Java](https://github.com/EOSIO/eosio-java) **must use a version built for the target server host and be a server-side Java project**. If you need support for ABIEOS serialization on Android, please see the [Android ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider) project.  Other Serialization Providers, however, can be created to support other target platforms.  If your project requires alternate platform support, or if you'd like to create a Serialization Provider and have questions, please reach out to us by [logging an issue](/../../issues/new).
+This project is compatible with server-side Java but requires native libraries built on the target machine. Therefore, any project depending on Java Serialization Provider with [EOSIO SDK for Java](https://github.com/EOSIO/eosio-java) **must use a version built for the target server host and be a server-side Java project**.
+
+If you need support for ABIEOS serialization on Android, please see the [Android ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider) project.
+
+Other serialization providers can be created to support other target platforms. If your project requires alternate platform support, or if you'd like to create a serialization provider and have questions, please reach out to us by [logging an issue](/../../issues/new).
 
 ## Installation
 
@@ -42,7 +46,7 @@ implementation 'one.block:eosiojava:1.0.0'
 implementation 'one.block:eosio-java-abieos-serialization-provider:1.0.0'
 ```
 
-The `build.gradle` files for the project currently include configurations for publishing the project to Artifactory.  These should be removed if you are not planning to use Artifactory or you will encounter build errors.  To do so, make the changes marked by comments throughout the files.
+The `build.gradle` files for the project currently include configurations for publishing the project to Artifactory. These should be removed if you are not planning to use Artifactory or you will encounter build errors. To do so, make the changes marked by comments throughout the files.
 
 Then refresh your gradle project.
 
@@ -75,7 +79,7 @@ try {
 }
 ```
 
-You should explicitly destroy the provider's context (i.e. in a `finally` block), or you could run into a crash when multithreading, per this call:
+You should explicitly destroy the provider's context (_i.e._, in a `finally` block), or you could run into a crash when multithreading, per this call:
 
 ```
 abieos.destroyContext();
@@ -83,13 +87,8 @@ abieos.destroyContext();
 
 ## Releases
 
-11/05/20
-
-Version 1.0.0 Release with EOSIO 3.0 functionality.  Docker builds for Alpline and Ubuntu Linux.
-
-10/15/20
-
-Version 0.1.3 Initial release as a Java library project.  This version is feature compatible with the 0.1.3 version of the [Android ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider) project.
+- 11/05/20: Version 1.0.0 Release with EOSIO 3.0 functionality. Docker builds for Alpline and Ubuntu Linux.
+- 10/15/20: Version 0.1.3 Initial release as a Java library project. This version is feature compatible with the 0.1.3 version of the [Android ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-android-abieos-serialization-provider) project.
 
 ## Want to help?
 

@@ -85,23 +85,23 @@ By default, libraries are installed from remote Maven repositories through Gradl
 1. Develop!
 
 ### Building With Docker
-Since [ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-abieos-serialization-provider) contains a native library component, it is necessary to build it specifically for the target platform it is to be run on.  Docker is a good method for doing this.  
+Since [ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-abieos-serialization-provider) contains a native library component, it is necessary to build it specifically for the target platform it is to be run on. Docker is a good method for doing this.
 
-The repository currently contains two Dockerfiles to use as examples.  The default `Dockerfile` is for [Alpine Linux](https://alpinelinux.org/).  `Dockerfile.ubuntu` is also provided to build for [Ubuntu 18.04](https://releases.ubuntu.com/18.04/).  Other build images can also be created.  If you are making an image, be sure the C++ compiler toolchain supports the GNU g++ extensions or equivalent or you will receive build time errors for the native library.
+The repository currently contains two Dockerfiles to use as examples. The default `Dockerfile` is for [Alpine Linux](https://alpinelinux.org/). `Dockerfile.ubuntu` is also provided to build for [Ubuntu 18.04](https://releases.ubuntu.com/18.04/). Other build images can also be created. If you are making an image, be sure the C++ compiler toolchain supports the GNU g++ extensions or equivalent or you will receive build time errors for the native library.
 
-To use the default `Dockerfile` to perform a build, you must first build the docker image.  This can be done from the top level of the checked out repository with the command:
+To use the default `Dockerfile` to perform a build, you must first build the Docker image. This can be done from the top level of the checked-out repository with the command:
 
 ```
 docker build --tag eosio-java-abieos:build .
 ```
 
-If the docker image builds succesfully, then you should be able to build and jar [ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-abieos-serialization-provider) by running the command:
+If the Docker image builds successfully, then you should be able to build and jar [ABIEOS Serialization Provider](https://github.com/EOSIO/eosio-java-abieos-serialization-provider) by running the command:
 
 ```
 docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project eosio-java-abieos:build ./gradlew --console=rich clean build
 ```
 
-Any other valid gradle task can be substituted for `jar` in the command above.  The docker images attach the project directory on the host machine, so changes made by the image will be visible to the host machine, and the reverse is also true.
+Any other valid gradle task can be substituted for `jar` in the command above. The Docker images attach the project directory on the host machine, so changes made by the image will be visible to the host machine, and the reverse is also true.
 
 Validate the jar has the correct contents by running the following command, and making sure the output matches what's below. If there is a '.dylib' file(s) or anything else, it might a crash:
 
@@ -163,8 +163,6 @@ Examples of unacceptable behavior include:
 - Public or private harassment
 - Publishing others’ private information, such as a physical or electronic address, without explicit permission
 - Other conduct which could reasonably be considered inappropriate in a professional setting
-
-
 
 ## Contributor License & Acknowledgments
 
