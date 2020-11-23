@@ -1,0 +1,56 @@
+import org.gradle.internal.jvm.Jvm
+
+plugins {
+    id 'cpp-library'
+}
+
+library {
+    binaries.configureEach { CppSharedLibrary binary ->
+        def compileTask = binary.compileTask.get()
+        def linkTask = binary.linkTask.get()
+
+        compileTask.includes.from("${Jvm.current().javaHome}/include")
+
+        def osFamily = binary.targetPlatform.targetMachine.operatingSystemFamily
+        if (osFamily.macOs) {
+            compileTask.includes.from("${Jvm.current().javaHome}/include/darwin")
+        } else if (osFamily.linux) {
+            compileTask.includes.from("${Jvm.current().javaHome}/include/linux")
+        } else if (osFamily.windows) {
+            compileTask.includes.from("${Jvm.current().javaHome}/include/win32")
+        }
+
+        compileTask.source.from fileTree(dir: "src/main/cpp", include: "abieos-lib.cpp")
+        compileTask.source.from fileTree(dir: "../abieos", includes:
+                ["src/abieos.cpp", "src/abi.cpp", "src/crypto.cpp", "src/fuzzer.cpp", "include/eosio/fpconv.c"])
+
+        compileTask.includes.from("../abieos/include")
+        compileTask.includes.from("../abieos/external/rapidjson/include")
+
+        def toolChain = binary.toolChain
+        if (toolChain instanceof VisualCpp) {
+            compileTask.compilerArgs.addAll(["/TC"])
+        } else if (toolChain instanceof GccCompatibleToolChain) {
+            def architectureName = binary.targetPlatform.targetMachine.architecture.name;
+            if (architectureName == "x86-64") {
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z"])
+                    linkTask.linkerArgs.addAll(["-fPIC", "-z noexecstack"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17"])
+                }
+            } else {
+                if (osFamily.linux) {
+                    compileTask.compilerArgs.addAll(["-fPIC", "-std=gnu++1z", "-DABIEOS_NO_INT128"])
+                    linkTask.linkerArgs.addAll(["-fPIC", "-z noexecstack"])
+                } else {
+                    compileTask.compilerArgs.addAll(["-x", "c++", "-std=c++17", "-DABIEOS_NO_INT128"])
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', "*.dylib", "*.so"], dir: 'libs')
+}
