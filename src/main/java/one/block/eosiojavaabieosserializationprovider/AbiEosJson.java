@@ -549,7 +549,7 @@ public class AbiEosJson {
                 "      { \"name\": \"account_ram_delta\", \"type\": \"account_delta?\" },\n" +
                 "      { \"name\": \"except\", \"type\": \"string?\" },\n" +
                 "      { \"name\": \"error_code\", \"type\": \"uint64?\" },\n" +
-                "      { \"name\": \"failed_dtrx_trace\", \"type\": \"transaction_trace[]\" },\n" +
+                "      { \"name\": \"failed_dtrx_trace\", \"type\": \"transaction_trace?\" },\n" +
                 "      { \"name\": \"partial\", \"type\": \"partial_transaction?\" }\n" +
                 "    ]\n" +
                 "    },\n" +
