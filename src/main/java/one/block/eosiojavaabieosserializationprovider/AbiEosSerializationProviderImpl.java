@@ -220,7 +220,7 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
         try {
             String abi = getAbiJsonString("ship.abi.json");
             AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
-                    "", "transaction_trace_v0", abi);
+                    "", "transaction_trace", abi);
             serializationObject.setJson(json);
             serialize(serializationObject);
             return serializationObject.getHex();
@@ -378,7 +378,7 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
             refreshContext();
             String abi = getAbiJsonString("ship.abi.json");
             AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
-                    "", "transaction_trace_v0", abi);
+                    "", "transaction_trace", abi);
             serializationObject.setHex(hex);
             deserialize(serializationObject);
             return serializationObject.getJson();
