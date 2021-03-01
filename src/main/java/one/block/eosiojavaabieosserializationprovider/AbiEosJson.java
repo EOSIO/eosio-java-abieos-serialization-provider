@@ -3,16 +3,20 @@ package one.block.eosiojavaabieosserializationprovider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * This class holds the JSON templates for ABI conversion as immutable static Maps.  These are used
  * to serialize/deserialize specific types.
  */
 public class AbiEosJson {
+    private static List<String> abiFiles = Arrays.asList("eosio.assert.abi.json", "transaction.abi.json",
+            "packed.transaction.abi.json", "ship.abi.json");
     public static final Map<String, String> abiEosJsonMap = initAbiEosJsonMap();
 
     /**
@@ -23,13 +27,12 @@ public class AbiEosJson {
      */
     private static Map<String, String> initAbiEosJsonMap() {
         Map<String, String> jsonMap = new HashMap<>();
-        String [] files = { "eosio.assert.abi.json", "transaction.abi.json",
-                "packed.transaction.abi.json", "ship.abi.json" };
         ClassLoader classLoader = AbiEosJson.class.getClassLoader();
+        String jsonContent;
 
-        for (String fileName: files) {
+        for (String fileName: abiFiles) {
             File f = new File(classLoader.getResource("abi/" + fileName).getFile());
-            String jsonContent = null;
+
             try {
                 jsonContent = new String(Files.readAllBytes(f.toPath()));
                 jsonMap.put(fileName, jsonContent);
