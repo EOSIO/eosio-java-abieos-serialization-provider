@@ -727,6 +727,85 @@ public class AbieosTest {
         assertEquals(json, jsonResult);
     }
 
+    @Test
+    public void jsonToTransactionTrace() {
+        String json = "[\"transaction_trace_v0\",{\"id\":\"3098EA9476266BFA957C13FA73C26806D78753099CE8DEF2A650971F07595A69\",\"status\":0,\"cpu_usage_us\":2000,\"net_usage_words\":25,\"elapsed\":\"194\",\"net_usage\":\"200\",\"scheduled\":false,\"action_traces\":[[\"action_trace_v1\",{\"action_ordinal\":1,\"creator_action_ordinal\":0,\"receipt\":[\"action_receipt_v0\",{\"receiver\":\"eosio\",\"act_digest\":\"F2FDEEFF77EFC899EED23EE05F9469357A096DC3083D493571CF68A422C69EFE\",\"global_sequence\":\"11\",\"recv_sequence\":\"11\",\"auth_sequence\":[{\"account\":\"eosio\",\"sequence\":\"11\"}],\"code_sequence\":2,\"abi_sequence\":0}],\"receiver\":\"eosio\",\"act\":{\"account\":\"eosio\",\"name\":\"newaccount\",\"authorization\":[{\"actor\":\"eosio\",\"permission\":\"active\"}],\"data\":\"0000000000EA305500409406A888CCA501000000010002C0DED2BC1F1305FB0FAAC5E6C03EE3A1924234985427B6167CA569D13DF435CF0100000001000000010002C0DED2BC1F1305FB0FAAC5E6C03EE3A1924234985427B6167CA569D13DF435CF01000000\"},\"context_free\":false,\"elapsed\":\"83\",\"console\":\"\",\"account_ram_deltas\":[{\"account\":\"oracle.aml\",\"delta\":\"2724\"}],\"account_disk_deltas\":[],\"except\":null,\"error_code\":null,\"return_value\":\"\"}]],\"account_ram_delta\":null,\"except\":null,\"error_code\":null,\"failed_dtrx_trace\":null,\"partial\":null}]";
+        String hexResult = "003098ea9476266bfa957c13fa73c26806d78753099ce8def2a650971f07595a6900d007000019c200000000000000c800000000000000000101010001000000000000ea3055f2fdeeff77efc899eed23ee05f9469357a096dc3083d493571cf68a422c69efe0b000000000000000b00000000000000010000000000ea30550b0000000000000002000000000000ea30550000000000ea305500409e9a2264b89a010000000000ea305500000000a8ed3232660000000000ea305500409406a888cca501000000010002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf0100000001000000010002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf01000000005300000000000000000100409406a888cca5a40a000000000000000000000000000000".toUpperCase();
+        String hex = null;
+
+        try {
+            hex = abieos.serializeTransactionTrace(json);
+        } catch (SerializeTransactionError err) {
+            err.printStackTrace();
+        }
+
+        assertNotNull(hex);
+        assertEquals(hex, hexResult);
+    }
+
+    @Test
+    public void jsonToTransactionTraceMsg() {
+        String jsonException = "[\"transaction_trace_exception\",{\"error_code\":\"3\",\"error_message\":\"error happens\"}]";
+        String jsonTransactionTrace = "[\"transaction_trace\",[\"transaction_trace_v0\",{\"id\":\"B2C8D46F161E06740CFADABFC9D11F013A1C90E25337FF3E22840B195E1ADC4B\",\"status\":0,\"cpu_usage_us\":2000,\"net_usage_words\":12,\"elapsed\":\"7670\",\"net_usage\":\"96\",\"scheduled\":false,\"action_traces\":[[\"action_trace_v1\",{\"action_ordinal\":1,\"creator_action_ordinal\":0,\"receipt\":[\"action_receipt_v0\",{\"receiver\":\"eosio\",\"act_digest\":\"7670940C29EC0A4C573EF052C5A29236393F587F208222B3C1B6A9C8FEA2C66A\",\"global_sequence\":\"27\",\"recv_sequence\":\"1\",\"auth_sequence\":[{\"account\":\"eosio\",\"sequence\":\"2\"}],\"code_sequence\":1,\"abi_sequence\":0}],\"receiver\":\"eosio\",\"act\":{\"account\":\"eosio\",\"name\":\"doit\",\"authorization\":[{\"actor\":\"eosio\",\"permission\":\"active\"}],\"data\":\"00\"},\"context_free\":false,\"elapsed\":\"7589\",\"console\":\"\",\"account_ram_deltas\":[],\"account_disk_deltas\":[],\"except\":null,\"error_code\":null,\"return_value\":\"01FFFFFFFFFFFFFFFF00\"}]],\"account_ram_delta\":null,\"except\":null,\"error_code\":null,\"failed_dtrx_trace\":null,\"partial\":null}]]";
+        String hexExceptionResult = "0003000000000000000D6572726F722068617070656E73";
+        String hexTransactionTraceResult = "0100B2C8D46F161E06740CFADABFC9D11F013A1C90E25337FF3E22840B195E1ADC4B00D00700000CF61D0000000000006000000000000000000101010001000000000000EA30557670940C29EC0A4C573EF052C5A29236393F587F208222B3C1B6A9C8FEA2C66A1B000000000000000100000000000000010000000000EA3055020000000000000001000000000000EA30550000000000EA30550000000000901D4D010000000000EA305500000000A8ED3232010000A51D00000000000000000000000A01FFFFFFFFFFFFFFFF000000000000";
+        String hexException = null;
+        String hexTransactionTrace = null;
+
+        try {
+            hexException = abieos.serializeTransactionTraceMsg(jsonException);
+            hexTransactionTrace = abieos.serializeTransactionTraceMsg(jsonTransactionTrace);
+        } catch (SerializeTransactionError err) {
+            err.printStackTrace();
+        }
+
+        assertNotNull(hexException);
+        assertNotNull(hexTransactionTrace);
+        assertEquals(hexException, hexExceptionResult);
+        assertEquals(hexTransactionTrace, hexTransactionTraceResult);
+    }
+
+    @Test
+    public void hexToJsonAbiTransactionTrace() {
+        String hex = "003098ea9476266bfa957c13fa73c26806d78753099ce8def2a650971f07595a6900d007000019c200000000000000c800000000000000000101010001000000000000ea3055f2fdeeff77efc899eed23ee05f9469357a096dc3083d493571cf68a422c69efe0b000000000000000b00000000000000010000000000ea30550b0000000000000002000000000000ea30550000000000ea305500409e9a2264b89a010000000000ea305500000000a8ed3232660000000000ea305500409406a888cca501000000010002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf0100000001000000010002c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cf01000000005300000000000000000100409406a888cca5a40a000000000000000000000000000000".toUpperCase();	        String hexException = "0003000000000000000D6572726F722068617070656E73";
+        String jsonResult = "[\"transaction_trace_v0\",{\"id\":\"3098EA9476266BFA957C13FA73C26806D78753099CE8DEF2A650971F07595A69\",\"status\":0,\"cpu_usage_us\":2000,\"net_usage_words\":25,\"elapsed\":\"194\",\"net_usage\":\"200\",\"scheduled\":false,\"action_traces\":[[\"action_trace_v1\",{\"action_ordinal\":1,\"creator_action_ordinal\":0,\"receipt\":[\"action_receipt_v0\",{\"receiver\":\"eosio\",\"act_digest\":\"F2FDEEFF77EFC899EED23EE05F9469357A096DC3083D493571CF68A422C69EFE\",\"global_sequence\":\"11\",\"recv_sequence\":\"11\",\"auth_sequence\":[{\"account\":\"eosio\",\"sequence\":\"11\"}],\"code_sequence\":2,\"abi_sequence\":0}],\"receiver\":\"eosio\",\"act\":{\"account\":\"eosio\",\"name\":\"newaccount\",\"authorization\":[{\"actor\":\"eosio\",\"permission\":\"active\"}],\"data\":\"0000000000EA305500409406A888CCA501000000010002C0DED2BC1F1305FB0FAAC5E6C03EE3A1924234985427B6167CA569D13DF435CF0100000001000000010002C0DED2BC1F1305FB0FAAC5E6C03EE3A1924234985427B6167CA569D13DF435CF01000000\"},\"context_free\":false,\"elapsed\":\"83\",\"console\":\"\",\"account_ram_deltas\":[{\"account\":\"oracle.aml\",\"delta\":\"2724\"}],\"account_disk_deltas\":[],\"except\":null,\"error_code\":null,\"return_value\":\"\"}]],\"account_ram_delta\":null,\"except\":null,\"error_code\":null,\"failed_dtrx_trace\":null,\"partial\":null}]";
+
+        String json= null;
+
+        try {
+            json = abieos.deserializeTransactionTrace(hex);
+        } catch (DeserializeTransactionError err) {
+            err.printStackTrace();
+        }
+
+        assertNotNull(json);
+        assertEquals(json, jsonResult);
+    }
+
+    @Test
+    public void hexToJsonAbiTransactionTraceMsg() {
+        String hexException = "0003000000000000000D6572726F722068617070656E73";
+        String hexTransactionTrace = "0100B2C8D46F161E06740CFADABFC9D11F013A1C90E25337FF3E22840B195E1ADC4B00D00700000CF61D0000000000006000000000000000000101010001000000000000EA30557670940C29EC0A4C573EF052C5A29236393F587F208222B3C1B6A9C8FEA2C66A1B000000000000000100000000000000010000000000EA3055020000000000000001000000000000EA30550000000000EA30550000000000901D4D010000000000EA305500000000A8ED3232010000A51D00000000000000000000000A01FFFFFFFFFFFFFFFF000000000000";
+
+        String jsonExceptionResult = "[\"transaction_trace_exception\",{\"error_code\":\"3\",\"error_message\":\"error happens\"}]";
+        String jsonTransactionTraceResult = "[\"transaction_trace\",[\"transaction_trace_v0\",{\"id\":\"B2C8D46F161E06740CFADABFC9D11F013A1C90E25337FF3E22840B195E1ADC4B\",\"status\":0,\"cpu_usage_us\":2000,\"net_usage_words\":12,\"elapsed\":\"7670\",\"net_usage\":\"96\",\"scheduled\":false,\"action_traces\":[[\"action_trace_v1\",{\"action_ordinal\":1,\"creator_action_ordinal\":0,\"receipt\":[\"action_receipt_v0\",{\"receiver\":\"eosio\",\"act_digest\":\"7670940C29EC0A4C573EF052C5A29236393F587F208222B3C1B6A9C8FEA2C66A\",\"global_sequence\":\"27\",\"recv_sequence\":\"1\",\"auth_sequence\":[{\"account\":\"eosio\",\"sequence\":\"2\"}],\"code_sequence\":1,\"abi_sequence\":0}],\"receiver\":\"eosio\",\"act\":{\"account\":\"eosio\",\"name\":\"doit\",\"authorization\":[{\"actor\":\"eosio\",\"permission\":\"active\"}],\"data\":\"00\"},\"context_free\":false,\"elapsed\":\"7589\",\"console\":\"\",\"account_ram_deltas\":[],\"account_disk_deltas\":[],\"except\":null,\"error_code\":null,\"return_value\":\"01FFFFFFFFFFFFFFFF00\"}]],\"account_ram_delta\":null,\"except\":null,\"error_code\":null,\"failed_dtrx_trace\":null,\"partial\":null}]]";
+
+        String jsonException = null;
+        String jsonTransactionTrace = null;
+
+        try {
+            jsonException = abieos.deserializeTransactionTraceMsg(hexException);
+            jsonTransactionTrace = abieos.deserializeTransactionTraceMsg(hexTransactionTrace);
+        } catch (DeserializeTransactionError err) {
+            err.printStackTrace();
+        }
+
+        assertNotNull(jsonException);
+        assertNotNull(jsonTransactionTrace);
+        assertEquals(jsonException, jsonExceptionResult);
+        assertEquals(jsonTransactionTrace, jsonTransactionTraceResult);
+    }
+
     // Direct comparison of the JSON strings is fragile.  This compares the expected JSON to a result by checking
     // that its keys are a sub-set of the results keys since abieos can add keys for empty values.  Values are not
     // included since they can be anything and are not comparable.  If abieos gets the keys right, that is

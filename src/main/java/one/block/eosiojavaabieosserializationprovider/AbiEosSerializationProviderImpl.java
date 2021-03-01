@@ -208,6 +208,50 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
     }
 
     /**
+     * Convenience method to transform a transaction trace JSON string to a hex string.
+     *
+     * @param json - JSON string representing the transaction trace to serialize.
+     * @return - Serialized hex string representing the transaction trace JSON.
+     * @throws SerializeTransactionError - A serialization error is thrown if there are any exceptions during the
+     *      * conversion process.
+     */
+    @NotNull
+    public String serializeTransactionTrace(String json) throws SerializeTransactionError {
+        try {
+            String abi = getAbiJsonString("ship.abi.json");
+            AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
+                    "", "transaction_trace", abi);
+            serializationObject.setJson(json);
+            serialize(serializationObject);
+            return serializationObject.getHex();
+        } catch (SerializationProviderError serializationProviderError) {
+            throw new SerializeTransactionError(serializationProviderError);
+        }
+    }
+
+    /**
+     * Convenience method to transform a transaction trace message JSON string to a hex string.
+     *
+     * @param json - JSON string representing the transaction trace message to serialize.
+     * @return - Serialized hex string representing the transaction trace message JSON.
+     * @throws SerializeTransactionError - A serialization error is thrown if there are any exceptions during the
+     *      * conversion process.
+     */
+    @NotNull
+    public String serializeTransactionTraceMsg(String json) throws SerializeTransactionError {
+        try {
+            String abi = getAbiJsonString("ship.abi.json");
+            AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
+                    "", "transaction_trace_msg", abi);
+            serializationObject.setJson(json);
+            serialize(serializationObject);
+            return serializationObject.getHex();
+        } catch (SerializationProviderError serializationProviderError) {
+            throw new SerializeTransactionError(serializationProviderError);
+        }
+    }
+
+    /**
      * Convenience method to transform an ABI JSON string to a hex string.
      *
      * @param json - JSON string representing the ABI to serialize.
@@ -334,6 +378,52 @@ public class AbiEosSerializationProviderImpl implements ISerializationProvider {
             String abi = getAbiJsonString("transaction.abi.json");
             AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
                     "", "transaction", abi);
+            serializationObject.setHex(hex);
+            deserialize(serializationObject);
+            return serializationObject.getJson();
+        } catch (SerializationProviderError serializationProviderError) {
+            throw new DeserializeTransactionError(serializationProviderError);
+        }
+    }
+
+    /**
+     * Convenience method to transform a transaction trace (v0) hex string to a JSON string.
+     *
+     * @param hex - Hex string representing the transaction trace (v0) to deserialize.
+     * @return - Deserialized JSON string representing the transaction trace hex.
+     * @throws DeserializeTransactionError - A deserialization error is thrown if there are any exceptions during the
+     *      * conversion process.
+     */
+    @NotNull
+    public String deserializeTransactionTrace(String hex) throws DeserializeTransactionError {
+        try {
+            refreshContext();
+            String abi = getAbiJsonString("ship.abi.json");
+            AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
+                    "", "transaction_trace", abi);
+            serializationObject.setHex(hex);
+            deserialize(serializationObject);
+            return serializationObject.getJson();
+        } catch (SerializationProviderError serializationProviderError) {
+            throw new DeserializeTransactionError(serializationProviderError);
+        }
+    }
+
+    /**
+     * Convenience method to transform a transaction trace message hex string to a JSON string.
+     *
+     * @param hex - Hex string representing the transaction trace message to deserialize.
+     * @return - Deserialized JSON string representing the transaction trace message hex.
+     * @throws DeserializeTransactionError - A deserialization error is thrown if there are any exceptions during the
+     *      * conversion process.
+     */
+    @NotNull
+    public String deserializeTransactionTraceMsg(String hex) throws DeserializeTransactionError {
+        try {
+            refreshContext();
+            String abi = getAbiJsonString("ship.abi.json");
+            AbiEosSerializationObject serializationObject = new AbiEosSerializationObject(null,
+                    "", "transaction_trace_msg", abi);
             serializationObject.setHex(hex);
             deserialize(serializationObject);
             return serializationObject.getJson();
